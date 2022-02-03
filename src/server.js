@@ -1,8 +1,13 @@
 const express = require('express')
-const res = require('express/lib/response')
 const path = require('path')
 
+const db = require('./database')
+const routes = require('./routes')
+
 const app = express()
+
+// conectando com o mongo
+db.connect()
 
 // definindo o template engine
 app.set('view engine', 'ejs')
@@ -16,13 +21,10 @@ app.use(express.static(path.join(__dirname, 'public')))
 // habilita server para receber dados via post (formulário)
 app.use(express.urlencoded({ extended: true }))
 
-//rotas 
+// definindo as rotas
+app.use('/', routes)
 
-app.get('/', (req, res) => {
-    res.render('index', {
-        title: 'titulo teste'
-    })
-})
+
 
 // 404 error (not found)
 app.use((req,res) => {
