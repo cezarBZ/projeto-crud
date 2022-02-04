@@ -2,7 +2,12 @@
 <html lang="en">
 <%- include('partials/head.ejs') %> 
 <body>
+    <%- include ('partials/navbar.ejs') %> 
     <h1><%= title %> </h1>
+
+    <% if (typeof message !== 'undefined') { %>
+     <%= message %>
+    <% } %>
     <form action="/register/add" method="POST">
         <div>
             <label>Nome</label>
@@ -23,6 +28,6 @@
         <button type="submit">Cadastrar</button>
     </form>
 
-    <% include ('partials/foot.ejs') %> 
+    <%- include ('partials/foot.ejs') %> 
 </body>
 </html>
