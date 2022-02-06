@@ -2,6 +2,7 @@ const CustomersModel = require('../models/customers')
 const { crypto } = require('../utils/password')
 
 const defaultTitle = 'Cadastro de clientes'
+const listTitle = "Listagem de usuários"
 
 // renderiza a view 'register'
 function index(req, res)  {
@@ -33,7 +34,7 @@ async function add(req, res) {
 async function list(req,res) {
     const users = await CustomersModel.find() // método do mongoose promise
     res.render('list', {
-        title: 'Listagem de usuários',
+        title: listTitle,
         users,
     })
 }
@@ -55,22 +56,32 @@ async function edit(req, res){
 
     const user = await CustomersModel.findById(id)
 
-
     user.name = name
     user.age = age
     user.email = email
 
     user.save()
     res.render('edit', {
-        title: 'Editar usu´rio',
+        title: 'Editar usuário',
         user,
         message: 'Usuário alterado com sucesso'
     })
+}
+
+async function remove(req, res){
+    const { id } = req.params
+
+    const remove = await CustomersModel.deleteOne({ _id: id })
+
+    if (remove.ok){
+        res.redirect('/list')
+    }
 }
 module.exports = {
     index,
     add,
     list,
     formEdit,
-    edit
+    edit,
+    remove
 }
